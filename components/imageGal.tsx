@@ -1,5 +1,5 @@
 'use client'
-
+import {clsx} from 'clsx'
 import Image from 'next/image'
 import { Button } from "@/components/ui/button";
 import {useState} from 'react'
@@ -43,9 +43,9 @@ export default function ImageGal() {
               </div>
               <div className="flex justify-around mt-6">
 
-          <Button className="rounded-full w-25" onClick={() => setCurrentImage(0)}>Hello</Button>
-          <Button className="rounded-full w-25" onClick={() => setCurrentImage(1)}>Hello</Button>
-          <Button className="rounded-full w-25" onClick={() => setCurrentImage(2)}>Hello</Button>
+          <Button className={clsx("rounded-full w-25 px-15", { "bg-white-500 text-black-50 border-black-200": currentImage === 0 })} onClick={() => setCurrentImage(0)}>Home Page</Button>
+          <Button className={clsx("rounded-full w-25 px-15", { "bg-white-500 text-black-50 border-black-200": currentImage === 1 })} onClick={() => setCurrentImage(1)}>Home Page Full</Button>
+          <Button className={clsx("rounded-full w-25 px-15", { "bg-white-500 text-black-50 border-black-200": currentImage === 2 })} onClick={() => setCurrentImage(2)}>Edit Page</Button>
               </div>
 
             </div>

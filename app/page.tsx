@@ -38,7 +38,7 @@ export default function Home() {
       className="relative overflow-hidden bg-[radial-gradient(circle_at_top_left,_rgba(15,23,42,0.08),_transparent_35%),radial-gradient(circle_at_top_right,_rgba(245,158,11,0.18),_transparent_30%),linear-gradient(180deg,_#f8fafc_0%,_#ffffff_45%,_#f8fafc_100%)] text-slate-950"
     >
    
-      <section className="mx-auto flex min-h-screen w-full max-w-7xl flex-col justify-center px-6 py-16 lg:px-8">
+      <section className="mx-auto flex min-h-screen w-full max-w-7xl flex-col justify-center px-6 py-20 lg:px-8">
         <div className="grid items-center gap-16 lg:grid-cols-[1.15fr_0.85fr]">
           <div className="max-w-3xl">
             <div className="mb-6 inline-flex items-center rounded-full border border-slate-200 bg-white/80 px-4 py-2 text-sm font-medium text-slate-600 shadow-sm backdrop-blur">
