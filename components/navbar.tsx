@@ -55,12 +55,12 @@ return (
             <div className="hidden items-center gap-3 sm:flex">
               {/* Future backend CTA: this would open the login flow when auth is connected. */}
               <Button asChild variant="ghost" className="rounded-full px-4">
-                <Link href="#waitlist">Login</Link>
+                <Link href="api/auth/login">Login</Link>
               </Button>
 
               {/* Future backend CTA: this would submit account creation or onboarding data later. */}
               <Button asChild className="rounded-full px-5">
-                <Link href="#waitlist">Sign up</Link>
+                <Link href="api/auth/signup">Sign up</Link>
               </Button>
             </div>
 

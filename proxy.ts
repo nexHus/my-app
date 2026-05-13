@@ -1,20 +1,32 @@
-import { NextRequest, NextResponse } from "next/server"
+// src/proxy.ts
+
+import {
+  NextRequest,
+  NextResponse,
+} from "next/server"
+
 import { verifyToken } from "@/lib/jwt"
 
-const protectedRoutes = [ "/settings"]
+export async function proxy(
+  req: NextRequest
+) {
+  const token =
+    req.cookies.get("token")?.value
 
-export function proxy(req: NextRequest) {
-  const { pathname } = req.nextUrl
+  const protectedRoutes = [
+    "/dashboard",
+  ]
 
-  const isProtected = protectedRoutes.some((route) =>
-    pathname.startsWith(route)
-  )
+  const isProtected =
+    protectedRoutes.some((route) =>
+      req.nextUrl.pathname.startsWith(
+        route
+      )
+    )
 
   if (!isProtected) {
     return NextResponse.next()
   }
-
-  const token = req.cookies.get("token")?.value
 
   if (!token) {
     return NextResponse.redirect(
@@ -22,7 +34,9 @@ export function proxy(req: NextRequest) {
     )
   }
 
-  const verified = verifyToken(token)
+  const verified = await verifyToken(
+    token
+  )
 
   if (!verified) {
     return NextResponse.redirect(
