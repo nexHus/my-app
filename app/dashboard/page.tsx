@@ -2,9 +2,9 @@ import { redirect } from "next/navigation"
 
 import DashboardBoard from "@/components/dashboard-board"
 import { getAuthenticatedUser } from "@/lib/auth"
-import connectDB from "@/lib/db";
+import connectDB from "@/lib/db"
 import JobModel from "@/models/Job"
-import UserModel from "@/models/User";
+import UserModel from "@/models/User"
 
 export default async function Dashboard() {
   const user = await getAuthenticatedUser()

@@ -67,7 +67,6 @@ export async function signUpAction(
   prevState: SignUpState | null,
   formData: FormData
 ): Promise<SignUpState | null> {
-  // Implementation for sign-up action
   const email = formData.get("email") as string
   const password = formData.get("password") as string
   const name = formData.get("name") as string
@@ -91,12 +90,9 @@ export async function signUpAction(
 } 
 
 
-//logout action
 export async function logOutAction() {
   const cookieStore = await cookies()
-
   cookieStore.delete("token")
-
   redirect("/api/auth/login")
 }
 

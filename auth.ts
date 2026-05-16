@@ -22,10 +22,10 @@ export const { handlers, auth } = NextAuth({
           const { email, password } = await signInSchema.parseAsync(credentials)
  
           // logic to salt and hash password
-          // const pwHash = saltAndHashPassword(passwor d)
+          // const pwHash = saltAndHashPassword(password)
  
           // logic to verify if the user exists
-          user = { email:"husnain@test.com",password:"password123" }
+          user = { email: "husnain@test.com", password: "password123" }
  
           if (!user) {
             throw new Error("Invalid credentials.")
@@ -38,6 +38,8 @@ export const { handlers, auth } = NextAuth({
             // Return `null` to indicate that the credentials are invalid
             return null
           }
+          // Return null for any other error
+          return null
         }
       },
     }),
