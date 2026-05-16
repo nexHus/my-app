@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   description: "Track applications, interviews, and resend follow-ups in one place.",
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
