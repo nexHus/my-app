@@ -1,35 +1,50 @@
-// src/app/dashboard/page.tsx
-
-import { cookies } from "next/headers"
 import { redirect } from "next/navigation"
 
-import { verifyToken } from "@/lib/jwt"
+import DashboardBoard from "@/components/dashboard-board"
+import { getAuthenticatedUser } from "@/lib/auth"
+import connectDB from "@/lib/db";
+import JobModel from "@/models/Job"
+import UserModel from "@/models/User";
 
 export default async function Dashboard() {
-  const cookieStore = await cookies()
-
-  const token =
-    cookieStore.get("token")?.value
-
-  if (!token) {
-    redirect("/login")
-  }
-
-  const user = await verifyToken(
-    token
-  )
+  const user = await getAuthenticatedUser()
 
   if (!user) {
-    redirect("/login")
+    redirect("/api/auth/login")
+  }
+  await connectDB()
+
+  const [userData, jobs] = await Promise.all([
+    UserModel.findById(user.id).lean(),
+    JobModel.find({ userId: user.id }).sort({ createdAt: -1 }).lean(),
+  ])
+
+  if (!userData) {
+    redirect("/api/auth/login")
   }
 
-  return (
-    <div>
-      <h1>Dashboard</h1>
+  const twoWeeksAgo = new Date()
+  twoWeeksAgo.setDate(twoWeeksAgo.getDate() - 14)
 
-      <p>
-        Welcome {user.email}
-      </p>
-    </div>
+  const normalizedJobs = jobs.map((job) => ({
+    _id: job._id.toString(),
+    company: job.company,
+    title: job.title,
+    location: job.location ?? null,
+    notes: job.notes ?? null,
+    status: job.status,
+    createdAt: job.createdAt.toISOString(),
+  }))
+
+  const staleJobs = normalizedJobs.filter(
+    (job) => new Date(job.createdAt) <= twoWeeksAgo
+  )
+
+  return (
+    <DashboardBoard
+      userName={userData.name}
+      jobs={normalizedJobs}
+      staleJobs={staleJobs}
+    />
   )
 }

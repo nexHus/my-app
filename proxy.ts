@@ -30,7 +30,7 @@ export async function proxy(
 
   if (!token) {
     return NextResponse.redirect(
-      new URL("/login", req.url)
+      new URL("/api/auth/login", req.url)
     )
   }
 
@@ -40,7 +40,7 @@ export async function proxy(
 
   if (!verified) {
     return NextResponse.redirect(
-      new URL("/login", req.url)
+      new URL("/api/auth/login", req.url)
     )
   }
 
