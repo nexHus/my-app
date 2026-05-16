@@ -155,3 +155,30 @@ export async function removeJobAction(formData: FormData) {
 
   redirect("/dashboard")
 }
+
+export async function updateJobStatusAction(formData: FormData) {
+  const user = await getAuthenticatedUser()
+
+  if (!user) {
+    redirect("/api/auth/login")
+  }
+
+  const jobId = String(formData.get("jobId") ?? "")
+  const rawStatus = String(formData.get("status") ?? "wishlist")
+  const status = JOB_STATUSES.includes(rawStatus as JobStatus)
+    ? (rawStatus as JobStatus)
+    : "wishlist"
+
+  if (!jobId) {
+    redirect("/dashboard")
+  }
+
+  await connectDB()
+
+  await JobModel.findOneAndUpdate(
+    { _id: jobId, userId: user.id },
+    { status }
+  )
+
+  redirect("/dashboard")
+}

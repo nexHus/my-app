@@ -25,40 +25,30 @@ export default async function NavBar() {
             </div>
           </Link>
 
-          <div className="flex items-center gap-2 lg:hidden">
-            {user ? (
-              <form action={logOutAction}>
-                <Button type="submit" variant="destructive" className="rounded-full px-4">
-                  Sign out
-                </Button>
-              </form>
-            ) : (
-              <Button asChild variant="ghost" className="rounded-full px-4">
-                <Link href="/api/auth/login">Login</Link>
-              </Button>
-            )}
-          </div>
         </div>
 
         <nav className="flex flex-wrap items-center gap-2">
           {user ? (
             <>
-              <Button asChild variant="ghost" className="rounded-full px-5">
+              <Button asChild variant="ghost" className="hidden rounded-full px-5 sm:inline-flex">
                 <Link href="/dashboard">Dashboard</Link>
               </Button>
-              <form action={logOutAction} className="hidden sm:block">
-                <Button type="submit" variant="destructive" className="rounded-full px-5">
+              <form action={logOutAction}>
+                <Button type="submit" variant="destructive" className="rounded-full px-4 sm:px-5">
                   Sign out
                 </Button>
               </form>
             </>
           ) : (
             <>
-              <Button asChild variant="ghost" className="rounded-full px-5">
+              <Button asChild variant="ghost" className="hidden rounded-full px-5 sm:inline-flex">
                 <Link href="/api/auth/login">Login</Link>
               </Button>
-              <Button asChild className="rounded-full px-5">
+              <Button asChild className="hidden rounded-full px-5 sm:inline-flex">
                 <Link href="/api/auth/signup">Sign up</Link>
+              </Button>
+              <Button asChild variant="ghost" className="rounded-full px-4 sm:hidden">
+                <Link href="/api/auth/login">Login</Link>
               </Button>
             </>
           )}

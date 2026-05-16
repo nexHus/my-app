@@ -3,7 +3,7 @@
 import { useActionState, useMemo, useState, type ReactNode } from "react"
 
 import { Button } from "@/components/ui/button"
-import { addJobAction, removeJobAction } from "@/lib/serverActions"
+import { addJobAction, removeJobAction, updateJobStatusAction } from "@/lib/serverActions"
 import { JOB_STATUSES, type JobStatus } from "@/lib/job-types"
 import { cn } from "@/lib/utils"
 
@@ -182,6 +182,7 @@ export default function DashboardBoard({
             <div className="mb-4 flex flex-wrap gap-2 overflow-x-auto pb-1">
               {tabs.map((tab) => {
                 const isActive = activeTab === tab.key
+                const tabCount = tab.key === "resend" ? staleJobs.length : counts[tab.key as JobStatus] || 0
 
                 return (
                   <button
@@ -189,7 +190,7 @@ export default function DashboardBoard({
                     type="button"
                     onClick={() => setActiveTab(tab.key)}
                     className={cn(
-                      "min-w-28 rounded-full px-4 py-2 text-left text-sm font-medium transition",
+                      "relative min-w-28 rounded-full px-4 py-2 text-left text-sm font-medium transition",
                       isActive
                         ? "bg-slate-950 text-white shadow-sm"
                         : "bg-slate-100 text-slate-600 hover:bg-slate-200"
@@ -203,6 +204,12 @@ export default function DashboardBoard({
                       )}
                     >
                       {tab.description}
+                    </span>
+                    <span className={cn(
+                      "absolute top-0 right-0 flex h-6 w-6 items-center justify-center rounded-full text-xs font-semibold",
+                      isActive ? "bg-amber-400 text-slate-950" : "bg-slate-300 text-slate-700"
+                    )}>
+                      {tabCount}
                     </span>
                   </button>
                 )
@@ -249,16 +256,41 @@ export default function DashboardBoard({
                         ) : null}
                       </div>
 
-                      <form action={removeJobAction}>
-                        <input type="hidden" name="jobId" value={job._id} />
-                        <Button
-                          type="submit"
-                          variant={activeTab === "resend" ? "default" : "outline"}
-                          className="h-10 rounded-full px-4 text-sm"
-                        >
-                          {activeTab === "resend" ? "Resent done" : "Remove"}
-                        </Button>
-                      </form>
+                      <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
+                        <form action={updateJobStatusAction} className="w-full sm:w-auto">
+                          <input type="hidden" name="jobId" value={job._id} />
+                          <div className="flex gap-2">
+                            <select
+                              name="status"
+                              defaultValue={job.status}
+                              className="rounded-2xl border border-slate-200 bg-slate-50 px-3 py-2 text-xs font-medium text-slate-950 sm:text-sm"
+                            >
+                              {JOB_STATUSES.map((status) => (
+                                <option key={status} value={status}>
+                                  {status}
+                                </option>
+                              ))}
+                            </select>
+                            <Button
+                              type="submit"
+                              variant="outline"
+                              className="h-10 rounded-full px-3 text-xs sm:px-4 sm:text-sm"
+                            >
+                              Update
+                            </Button>
+                          </div>
+                        </form>
+                        <form action={removeJobAction}>
+                          <input type="hidden" name="jobId" value={job._id} />
+                          <Button
+                            type="submit"
+                            variant={activeTab === "resend" ? "default" : "outline"}
+                            className="h-10 rounded-full px-4 text-sm"
+                          >
+                            {activeTab === "resend" ? "Resent done" : "Remove"}
+                          </Button>
+                        </form>
+                      </div>
                     </div>
                   </article>
                 ))
